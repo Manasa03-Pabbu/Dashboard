@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+        <h1>Protected Dashboard</h1>
+
+        <p><strong>Name:</strong> <%= user.displayName %></p>
+
+        <% if (user.emails && user.emails.length > 0) { %>
+            <p><strong>Email:</strong> <%= user.emails[0].value %></p>
+        <% } %>
+
+        <p>This page is protected using OAuth authentication.</p>
+
+        <a href="/" class="btn">Home</a>
+        <a href="/logout" class="btn logout">Logout</a>
+    </div>
+
+</div>
+
+</body>
+</html>
