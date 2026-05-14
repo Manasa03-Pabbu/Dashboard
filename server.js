@@ -257,36 +257,46 @@ app.get("/result", isAuthenticated, (req, res) => {
     });
 });
 
-// Weather API
 app.post("/weather", async (req, res) => {
     try {
-        const city = req.body.city;
+        const city = req.body.city.trim();
 
-        if (!city) {
-            return res.render("index", {
-                user: req.user || null,
-                weather: null,
-                error: "Please enter a city name"
-            });
-        }
+        console.log("City entered:", city);
 
         const geoResponse = await axios.get(
-            `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`
+            "https://geocoding-api.open-meteo.com/v1/search",
+            {
+                params: {
+                    name: city,
+                    count: 1
+                }
+            }
         );
 
-        if (!geoResponse.data.results) {
+        console.log("Geo Data:", geoResponse.data);
+
+        if (!geoResponse.data.results || geoResponse.data.results.length === 0) {
             return res.render("index", {
                 user: req.user || null,
                 weather: null,
-                error: "City not found"
+                error: "City not found. Try another city name."
             });
         }
 
         const location = geoResponse.data.results[0];
 
         const weatherResponse = await axios.get(
-            `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current_weather=true`
+            "https://api.open-meteo.com/v1/forecast",
+            {
+                params: {
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                    current_weather: true
+                }
+            }
         );
+
+        console.log("Weather Data:", weatherResponse.data);
 
         const weatherData = {
             city: location.name,
@@ -302,12 +312,12 @@ app.post("/weather", async (req, res) => {
         });
 
     } catch (err) {
-        console.log(err);
+        console.log("Weather Error:", err.message);
 
         res.render("index", {
             user: req.user || null,
             weather: null,
-            error: "Something went wrong while fetching weather data"
+            error: "Weather API is not working. Check internet connection."
         });
     }
 });

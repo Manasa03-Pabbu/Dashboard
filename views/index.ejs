@@ -1,319 +1,609 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>External API Integration</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
-<!-- Normal Login Form -->
-    <div class="card p-4 mb-2" id="login-section">
-        <h2 class="text-center mb-3">Login</h2>
 
-        <form id="loginForm">
+<!-- LOGIN -->
 
-            <input type="email" id="loginEmail" class="form-control mb-3" placeholder="Enter Email" required>
+<div class="card p-4 mb-2" id="login-section">
 
-            <input type="password" id="loginPassword" class="form-control mb-3" placeholder="Enter Password" required>
-
-            <button type="submit" class="btn btn-success w-100">
-                Login
-            </button>
-
-        </form>
-    </div>
-<p class="text-center mt-3">
-
-    Not Yet Registered?
-
-    <a href="javascript:void(0)"
-   onclick="showRegisterForm(event)">
-   Go to Registration
-</a>
-
-</p>
-
-    <!-- Registration Form -->
-    <div class="card p-4 mb-2" id="register-section" style="display:none;">
-        <h2 class="text-center mb-3">User Registration</h2>
-
-        <form id="userForm">
-
-            <input type="text" id="name" class="form-control mb-3" placeholder="Enter Name" required>
-
-            <input type="email" id="email" class="form-control mb-3" placeholder="Enter Email" required>
-
-            <input type="password" id="password" class="form-control mb-1" placeholder="Enter Password" onkeyup="checkPassword()" required>
-
-            <small id="strength"></small>
-
-            <input type="tel" id="phone" class="form-control mb-1 mt-3" placeholder="Enter Phone" onkeyup="checkPhone()" required>
-
-            <small id="phoneError"></small>
-
-            <input type="number" id="age" class="form-control mb-3 mt-3" placeholder="Enter Age" required>
-
-            <button type="submit" class="btn btn-primary w-100">
-                Add User
-            </button>
-
-        </form>
-    </div>
-
-
-  
-
-
-    <!-- Google OAuth Login -->
-    <div class="card p-4 mb-2">
-        <h2 class="text-center"></h2>
-
-        <% if (typeof user !== "undefined" && user) { %>
-            <p class="text-center">Welcome, <%= user.displayName %></p>
-
-            <a href="/result" class="btn btn-primary w-100 mb-2">
-                Go to Result Page
-            </a>
-
-            <a href="/logout" class="btn btn-danger w-100">
-                Logout
-            </a>
-        <% } else { %>
-            <a href="/auth/google" class="google-login-btn">
-    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="google-icon">
-    Continue with Google
-</a>
-        <% } %>
-    </div>
-
-
-    
-    <!-- Weather API -->
-    <!-- Weather API -->
-
-<div class="card p-4 mb-4">
-
-    <h2 class="text-center mb-0">
-
+    <h2 class="text-center mb-3">
+        Login
     </h2>
 
-    <form action="/weather" method="POST">
+    <form id="loginForm">
 
         <input
-        type="text"
-        name="city"
+        type="email"
+        id="loginEmail"
         class="form-control mb-3"
-        placeholder="Enter City Name"
+        placeholder="Enter Email"
+        required>
+
+        <input
+        type="password"
+        id="loginPassword"
+        class="form-control mb-3"
+        placeholder="Enter Password"
         required>
 
         <button
         type="submit"
-        class="weather-btn w-100">
+        class="btn btn-success w-100">
 
-            <img
-            src="https://cdn-icons-png.flaticon.com/512/1779/1779940.png"
-            class="weather-icon">
-
-            Get Weather
+        Login
 
         </button>
 
     </form>
 
-    <% if (typeof error !== "undefined" && error) { %>
+</div>
 
-        <p class="error mt-3">
-            <%= error %>
-        </p>
 
-    <% } %>
+<p class="text-center mt-3">
 
-    <% if (typeof weather !== "undefined" && weather) { %>
+Not Yet Registered?
 
-        <div class="result mt-3">
+<a href="#" id="registerBtn">
 
-            <h3>Weather Result</h3>
+Go to Registration
 
-            <p>
-                <strong>City:</strong>
-                <%= weather.city %>
-            </p>
+</a>
 
-            <p>
-                <strong>Country:</strong>
-                <%= weather.country %>
-            </p>
+</p>
 
-            <p>
-                <strong>Temperature:</strong>
-                <%= weather.temperature %> °C
-            </p>
 
-            <p>
-                <strong>Wind Speed:</strong>
-                <%= weather.windspeed %> km/h
-            </p>
 
-        </div>
+<!-- REGISTRATION -->
 
-    <% } %>
+<div
+class="card p-4 mb-2"
+id="register-section"
+style="display:none;">
+
+<h2 class="text-center mb-3">
+
+User Registration
+
+</h2>
+
+
+<form id="userForm">
+
+<input
+type="text"
+id="name"
+class="form-control mb-3"
+placeholder="Enter Name"
+required>
+
+
+<input
+type="email"
+id="email"
+class="form-control mb-3"
+placeholder="Enter Email"
+required>
+
+
+<input
+type="password"
+id="password"
+class="form-control mb-1"
+placeholder="Enter Password"
+onkeyup="checkPassword()"
+required>
+
+<small id="strength"></small>
+
+
+<input
+type="tel"
+id="phone"
+class="form-control mt-3"
+placeholder="Enter Phone"
+onkeyup="checkPhone()"
+required>
+
+<small id="phoneError"></small>
+
+
+<input
+type="number"
+id="age"
+class="form-control mt-3 mb-3"
+placeholder="Enter Age"
+required>
+
+
+<button
+type="submit"
+class="btn btn-primary w-100">
+
+Add User
+
+</button>
+
+</form>
 
 </div>
 
+
+<div id="userList"></div>
+
+
+
+<!-- GOOGLE LOGIN -->
+
+<div class="card p-4 mb-2">
+
+<% if(typeof user!=="undefined" && user){ %>
+
+<p class="text-center">
+
+Welcome,
+<%= user.displayName %>
+
+</p>
+
+<a
+href="/result"
+class="btn btn-primary w-100 mb-2">
+
+Go to Result Page
+
+</a>
+
+<a
+href="/logout"
+class="btn btn-danger w-100">
+
+Logout
+
+</a>
+
+<% } else { %>
+
+<a
+href="/auth/google"
+class="google-login-btn">
+
+<img
+src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+class="google-icon">
+
+Continue with Google
+
+</a>
+
+<% } %>
+
+</div>
+
+
+
+<!-- WEATHER -->
+
+<div class="card p-4 mb-4">
+
+    <% if (typeof weather !== "undefined" && weather) { %>
+    <div class="result mt-3">
+        <h3>Weather Result</h3>
+        <p><strong>City:</strong> <%= weather.city %></p>
+        <p><strong>Country:</strong> <%= weather.country %></p>
+        <p><strong>Temperature:</strong> <%= weather.temperature %> °C</p>
+        <p><strong>Wind Speed:</strong> <%= weather.windspeed %> km/h</p>
+    </div>
+<% } %>
+
+<form
+action="/weather"
+method="POST">
+
+<input
+type="text"
+name="city"
+class="form-control mb-3"
+placeholder="Enter City Name"
+required>
+
+
+<button
+type="submit"
+class="btn btn-info w-100">
+
+Get Weather
+
+</button>
+
+</form>
+
+</div>
+
+
+
 <script>
-    fetchUsers();
 
-    // Register User
-    document.getElementById("userForm").addEventListener("submit", async function(e) {
-        e.preventDefault();
-
-        const userData = {
-            name: document.getElementById("name").value,
-            email: document.getElementById("email").value.trim().toLowerCase(),
-            password: document.getElementById("password").value,
-            phone: document.getElementById("phone").value,
-            age: document.getElementById("age").value
-        };
-
-        const response = await fetch("/signup", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(userData)
-        });
-
-        const result = await response.text();
-
-        alert(result);
-
-        if (result === "Signup Successful") {
-            document.getElementById("userForm").reset();
-            document.getElementById("strength").innerHTML = "";
-            document.getElementById("phoneError").innerHTML = "";
-            fetchUsers();
-        }
-    });
+document.addEventListener(
+"DOMContentLoaded",
+function(){
 
 
-  function showRegisterForm(event) {
+fetchUsers();
 
-    event.preventDefault();
 
-    document
-    .getElementById("login-section")
-    .style.display = "none";
 
-    document
-    .getElementById("register-section")
-    .style.display = "block";
+document
+.getElementById("registerBtn")
+.addEventListener("click",function(e){
 
-    document
-    .getElementById("register-section")
-    .scrollIntoView({
-        behavior: "smooth"
-    });
+e.preventDefault();
+
+document
+.getElementById("login-section")
+.style.display="none";
+
+document
+.getElementById("register-section")
+.style.display="block";
+
+});
+
+
+
+
+// REGISTER
+
+document
+.getElementById("userForm")
+.addEventListener(
+"submit",
+async function(e){
+
+e.preventDefault();
+
+let phone=
+document
+.getElementById("phone")
+.value;
+
+let password=
+document
+.getElementById("password")
+.value;
+
+
+
+let phonePattern=
+/^[0-9]{10}$/;
+
+
+let passwordPattern=
+/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@#$%^&*!]).{6,}$/;
+
+
+
+if(!phonePattern.test(phone)){
+
+alert(
+"Phone number must contain exactly 10 digits"
+);
+
+return;
+
+}
+
+
+if(
+!passwordPattern.test(password)
+){
+
+alert(
+`Password must contain:
+
+Uppercase
+Lowercase
+Number
+Special character
+Minimum 6 characters`
+);
+
+return;
+
 }
 
 
 
-    // Login User
-    document.getElementById("loginForm").addEventListener("submit", async function(e) {
-        e.preventDefault();
+const userData={
 
-        const loginData = {
-            email: document.getElementById("loginEmail").value.trim().toLowerCase(),
-            password: document.getElementById("loginPassword").value
-        };
+name:
+document
+.getElementById("name")
+.value,
 
-        const response = await fetch("/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(loginData)
-        });
+email:
+document
+.getElementById("email")
+.value
+.trim()
+.toLowerCase(),
 
-        const result = await response.text();
+password:
+password,
 
-        alert(result);
-    });
+phone:
+phone,
 
-    // Fetch Users
-    async function fetchUsers() {
-        const response = await fetch("/api/users");
-        const users = await response.json();
+age:
+document
+.getElementById("age")
+.value
 
-        const userList = document.getElementById("userList");
-        userList.innerHTML = "";
+};
 
-        users.forEach(user => {
-            userList.innerHTML += `
-                <div class="card p-3 mt-3 mb-3">
-                    <h5>${user.name}</h5>
 
-                    <p><strong>Email:</strong> ${user.email}</p>
-                    <p><strong>Phone:</strong> ${user.phone}</p>
-                    <p><strong>Age:</strong> ${user.age}</p>
 
-                    <button class="btn btn-danger" onclick="deleteUser('${user._id}')">
-                        Delete
-                    </button>
-                </div>
-            `;
-        });
-    }
+const response=
+await fetch(
+"/signup",
+{
 
-    // Delete User
-    async function deleteUser(id) {
-        await fetch(`/api/users/${id}`, {
-            method: "DELETE"
-        });
+method:"POST",
 
-        fetchUsers();
-    }
+headers:{
+"Content-Type":
+"application/json"
+},
 
-    // Phone Validation
-    function checkPhone() {
-        let phone = document.getElementById("phone").value;
-        let phoneError = document.getElementById("phoneError");
+body:
+JSON.stringify(userData)
 
-        let phonePattern = /^[0-9]{10}$/;
+}
+);
 
-        if (phonePattern.test(phone)) {
-            phoneError.innerHTML = "Valid Phone Number";
-            phoneError.style.color = "green";
-        } else {
-            phoneError.innerHTML = "Phone number must contain exactly 10 digits";
-            phoneError.style.color = "red";
-        }
-    }
 
-    // Password Validation
-    function checkPassword() {
-        let password = document.getElementById("password").value;
-        let strength = document.getElementById("strength");
+const result=
+await response.text();
 
-        let passwordPattern = /^(?=.*[A-Z])(?=.*[0-9]).{6,}$/;
+alert(result);
 
-        if (passwordPattern.test(password)) {
-            strength.innerHTML = "Strong Password";
-            strength.style.color = "green";
-        } else {
-            strength.innerHTML = `
-                Password must contain:<br>
-                Uppercase letter<br>
-                Number<br>
-                Minimum 6 characters
-            `;
 
-            strength.style.color = "red";
-        }
-    }
+if(
+result==="Signup Successful"
+){
 
-    
+document
+.getElementById("userForm")
+.reset();
+
+fetchUsers();
+
+}
+
+});
+
+
+
+
+// LOGIN
+
+document
+.getElementById("loginForm")
+.addEventListener(
+"submit",
+async function(e){
+
+e.preventDefault();
+
+const loginData={
+
+email:
+document
+.getElementById("loginEmail")
+.value,
+
+password:
+document
+.getElementById("loginPassword")
+.value
+
+};
+
+
+const response=
+await fetch("/login",{
+
+method:"POST",
+
+headers:{
+"Content-Type":
+"application/json"
+},
+
+body:
+JSON.stringify(loginData)
+
+});
+
+
+const result=
+await response.text();
+
+alert(result);
+
+});
+
+});
+
+
+
+
+// FETCH USERS
+
+async function fetchUsers(){
+
+const userList=
+document
+.getElementById("userList");
+
+
+const response=
+await fetch(
+"/api/users"
+);
+
+const users=
+await response.json();
+
+userList.innerHTML="";
+
+
+users.forEach(user=>{
+
+userList.innerHTML+=`
+
+<div class="card p-3 mt-3">
+
+<h5>${user.name}</h5>
+
+<p>Email:
+${user.email}</p>
+
+<p>Phone:
+${user.phone}</p>
+
+<p>Age:
+${user.age}</p>
+
+<button
+class="btn btn-danger"
+onclick="deleteUser('${user._id}')">
+
+Delete
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+
+// DELETE
+
+async function deleteUser(id){
+
+await fetch(
+`/api/users/${id}`,
+{
+method:"DELETE"
+}
+);
+
+fetchUsers();
+
+}
+
+
+
+// PHONE
+
+function checkPhone(){
+
+let phone=
+document
+.getElementById("phone")
+.value;
+
+
+let phoneError=
+document
+.getElementById("phoneError");
+
+
+if(phone.length===10){
+
+phoneError.innerHTML=
+"Valid Phone Number";
+
+phoneError.style.color=
+"green";
+
+}
+
+else{
+
+phoneError.innerHTML=
+"Phone must contain 10 digits";
+
+phoneError.style.color=
+"red";
+
+}
+
+}
+
+
+
+// PASSWORD
+
+function checkPassword(){
+
+let password=
+document
+.getElementById("password")
+.value;
+
+
+let strength=
+document
+.getElementById("strength");
+
+
+let passwordPattern=
+/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@#$%^&*!]).{6,}$/;
+
+
+if(
+passwordPattern
+.test(password)
+){
+
+strength.innerHTML=
+"Strong Password";
+
+strength.style.color=
+"green";
+
+}
+else{
+
+strength.innerHTML=
+`Need:
+Uppercase,
+Lowercase,
+Number,
+Special Character`;
+
+strength.style.color=
+"red";
+
+}
+
+}
+
 </script>
 
 </body>
